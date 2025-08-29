@@ -1,6 +1,6 @@
 # 普通指针
 
-指针是一个双刃剑
+指针是一把双刃剑
 
 
 ## 本质
@@ -15,22 +15,15 @@ std::cout<<ptr<<std::endl;
 通过对指针的解引用，我们可以获得物品
 
 ```cpp
-class Image
-{
-public:
-std::size_t rows_{0};
-std::size_t cols_{0};
-double *data_{nullptr};
-};
+class Image { };
 
-int main()
-{
-double obstacles_num = 30;
-double *ptr = &obstacles_num;
-Image origin_img;
-std::cout<<sizeof(ptr)<<std::endl;
-Image *img = &origin_img;
-std::cout<<sizeof(img)<<std::endl;
+int main() {
+    double obstacles_num = 30;
+    double *ptr = &obstacles_num;
+    Image origin_img;
+    std::cout<<sizeof(ptr)<<std::endl;
+    Image *img = &origin_img;
+    std::cout<<sizeof(img)<<std::endl;
 
 }
 ```
@@ -45,4 +38,9 @@ ptr = &origin_img;
 
 我认为有以下几点原因:
 1. 如果支持程序员进行这种隐式转换，那么一旦程序员忘记这个指针实际指向的对象是什么，那么极其容易造成访问不合法（内存模型问题）
-2. 显式转换代表着程序员知道自己在做什么，那么责任由他自己承担
+2. 显式转换代表着程序员知道自己在做什么，那么责任由他自己承担，而不是出问题时甩锅给其他人.
+
+```cpp
+double *ptr{nullptr};
+```
+在cpp中，一般使用nullptr关键字表示空指针，在c中，NULL其实就是一个宏，NULL就是0，问题是0的确是一个有效地址,而且赋值的时候意义不明确.
