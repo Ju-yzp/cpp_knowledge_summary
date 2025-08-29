@@ -1,0 +1,90 @@
+# 普通C++项目的pre-commit配置
+# 使用方式:
+#   pre-commit run -a          # 手动运行所有检查
+#   pre-commit install         # 安装为git提交钩子（每次提交自动运行）
+#   pre-commit autoupdate      # 更新钩子版本
+
+repos:
+  # 基础文件检查（通用工具）
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+      - id: check-added-large-files  # 禁止提交过大文件（默认>50MB）
+      - id: check-case-conflict      # 检查文件名大小写冲突
+      - id: check-merge-conflict     # 检查合并冲突标记（如<<<<<<< HEAD）
+      - id: check-symlinks           # 检查无效符号链接
+      - id: check-xml                # 检查XML文件格式
+      - id: check-yaml               # 检查YAML文件格式（允许多文档）
+      - id: end-of-file-fixer        # 确保文件结尾有一个空行
+      - id: mixed-line-ending        # 统一换行符（默认LF）
+      - id: trailing-whitespace      # 移除行尾多余空格
+      - id: fix-byte-order-marker    # 移除UTF-8 BOM标记
+
+
+  # C++代码格式化
+  - repo: https://github.com/pre-commit/mirrors-clang-format
+    rev: v20.1.8
+    hooks:
+      - id: clang-format
+        args: ['-fallback-style=none', '-i']  # 使用项目根目录的.clang-format配置
+        files: \.(h|hh|hxx|hpp|c|cc|cpp|cxx)$  # 仅检查C++相关文件
+
+
+  # C++静态分析（通用工具）
+  - repo: https://github.com/pocc/pre-commit-hooks
+    rev: v1.3.5
+    hooks:
+      - id: cppcheck  # 替代ament_cppcheck，通用C++静态分析
+        args: ['--enable=warning,style,performance,portability', '--inconclusive']
+        files: \.(h|hh|hxx|hpp|c|cc|cpp|cxx)$
+
+      - id: cpplint   # 替代ament_cpplint，通用C++代码规范检查
+        args: ['--linelength=100', '--filter=-whitespace/newline']
+        files: \.(h|hh|hxx|hpp|c|cc|cpp|cxx)$
+
+
+  # CMake配置检查与格式化
+  - repo: https://github.com/cheshirekow/cmake-format-precommit
+    rev: v0.6.13
+    hooks:
+      - id: cmake-format  # 格式化CMakeLists.txt和cmake脚本
+        files: (CMakeLists\.txt|\.cmake)$
+
+      - id: cmake-lint    # 检查CMake语法和风格
+        files: (CMakeLists\.txt|\.cmake)$
+
+
+  # 版权声明检查（通用版）
+  - repo: https://github.com/pre-commit/mirrors-prettier
+    rev: v4.0.0-alpha.8
+    hooks:
+      - id: prettier
+        name: check-copyright-header
+        entry: bash -c 'grep -q "Copyright (c) [0-9,-]\+" "$1" || (echo "Missing copyright header: $1" && exit 1)' --
+        language: system
+        files: \.(h|hh|hxx|hpp|c|cc|cpp|cxx|cmake|txt)$
+        exclude: (^third_party/|^external/|^build/)  # 排除第三方代码
+
+
+  # 文档与拼写检查
+  - repo: https://github.com/PyCQA/doc8
+    rev: v2.0.0
+    hooks:
+      - id: doc8  # 检查rst文档格式
+        args: ['--max-line-length=100', '--ignore=D001']
+        files: \.rst$
+
+  - repo: https://github.com/codespell-project/codespell
+    rev: v2.4.1
+    hooks:
+      - id: codespell  # 检查注释和文档中的拼写错误
+        args: ['--write-changes', '-L manuel,ist']  # 忽略特定误判词
+        exclude: (^third_party/|^external/|^build/|\.svg$)
+
+
+  # 配置文件验证（如GitHub Actions、JSON等）
+  - repo: https://github.com/python-jsonschema/check-jsonschema
+    rev: 0.33.2
+    hooks:
+      - id: check-github-workflows  # 验证GitHub工作流配置（如需）
+      - id: check-json              # 检查JSON文件格式
