@@ -54,7 +54,7 @@ std::mutex normal_mtx;
 void read_data(){
     for(size_t count{0}; count < test_data.size(); count++){
         std::shared_lock<std::shared_mutex> lock(shared_mtx);
-        std::cout<<test_data[count]<<std::endl; 
+        std::cout<<test_data[count]<<std::endl;
         std::this_thread::sleep_for(std::chrono::milliseconds(10)); }
 }
 
