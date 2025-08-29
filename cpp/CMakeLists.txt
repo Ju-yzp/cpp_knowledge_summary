@@ -23,5 +23,12 @@ foreach(cpp_file ${cpp_files})
 
   add_executable(${FILE_PREFIX} ${cpp_file})
 
+  if(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+    target_compile_options(${FILE_PREFIX} PRIVATE -O0)
+    target_compile_options(${FILE_PREFIX} PRIVATE -fno-unroll-loops)
+    target_compile_options(${FILE_PREFIX} PRIVATE -fno-vectorize)
+    target_compile_options(${FILE_PREFIX} PRIVATE -fno-slp-vectorize)
+  endif()
+
   install(TARGETS ${FILE_PREFIX} DESTINATION lib/${PROJECT_NAME})
 endforeach()

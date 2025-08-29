@@ -1,5 +1,5 @@
 // Copyright 2025 Ju-p
-// Licensed under the MIT License (
+// Licensed under the MIT License
 
 #include <cstddef>
 #include <iostream>
