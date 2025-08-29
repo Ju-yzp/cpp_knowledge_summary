@@ -1,10 +1,10 @@
 ---
 Language:        Cpp
-BasedOnStyle:  Google  
+BasedOnStyle:  Google
 
-BreakBeforeBraces: Attach 
+BreakBeforeBraces: Attach
 ColumnLimit: 100
-AccessModifierOffset: -4 
+AccessModifierOffset: -4
 AlignAfterOpenBracket: AlwaysBreak
 ConstructorInitializerIndentWidth: 4
 ContinuationIndentWidth: 4

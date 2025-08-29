@@ -40,3 +40,8 @@ repos:
         files: '(CMakeLists\.txt|\.cmake)$'
       - id: cmake-lint
         files: '(CMakeLists\.txt|\.cmake)$'
+
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v1.2.3
+    hooks:
+    -   id: trailing-whitespace
