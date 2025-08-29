@@ -1,4 +1,4 @@
-// Copyright 2025 Your Name/Your Team
+// Copyright 2025 Ju-p
 // Licensed under the MIT License (optional, 根据项目实际协议补充)
 
 #include <cstddef>
